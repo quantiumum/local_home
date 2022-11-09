@@ -9,8 +9,10 @@ class DHT11(Device):
 
     def add_to_db(self, file_db):
         try:
+            self.create_table(file_db)
             self.sqlite_connection = sqlite3.connect(file_db)
             self.cursor = self.sqlite_connection.cursor()
+            self.sqlite_connection.commit()
             self.sql1 = """INSERT INTO temp_sens(temperature, humidity, currentdate, currentime, device)
                  values(?, ?, ?, ?, ?);"""
             self.sql2 = (self.get_value(self.temp_uuid_in_cels), self.get_value(self.humidity_in_proc), self.date['cur_date'], self.date['cur_time'], self.room)
@@ -41,3 +43,18 @@ class DHT11(Device):
                 self.sqlite_connection.close()
                 print("Соединение с SQLite закрыто")
                 return self.records
+
+
+    def create_table(self, file_db):
+        try:
+            self.sqlite_connection = sqlite3.connect(file_db)
+            self.cursor = self.sqlite_connection.cursor()
+            self.cursor.execute("""CREATE TABLE IF NOT EXISTS temp_sens(id INTEGER PRIMARY KEY AUTOINCREMENT, temperature NUMERIC, humidity NUMERIC, currentdate DATE, currentime TIME, device TEXT)""")
+            self.sqlite_connection.commit()
+            self.cursor.close()
+        except sqlite3.Error as error:
+            print("Ошибка при подключении к sqlite", error)
+        finally:
+            if (self.sqlite_connection):
+                self.sqlite_connection.close()
+                print("Соединение с SQLite закрыто")

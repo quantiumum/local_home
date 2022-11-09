@@ -1,0 +1,8 @@
+{ 
+    "name" : "test_esp32", 
+    "room" : "main", 
+    "type" : "dht11", 
+    "mac" : "00:00:00:00:00:00", 
+    "temp_uuid_in_cels" :"beb5483e-36e1-4688-b7f5-ea07361b26a8", 
+    "humidity_in_proc" :"3e1b86b6-5b88-11ed-9b6a-0242ac120002" 
+}

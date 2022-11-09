@@ -16,16 +16,16 @@ class Device():
                      'cur_time' : datetime.datetime.today().strftime("%H:%M:%S")
                     }
 
-    def connect_to_ble(self):
+    def connect_to(self):
         self.adapter = pygatt.GATTToolBackend()
         self.adapter.start()
         self.device = self.adapter.connect(self.mac)
 
-    def disconnect_from_ble(self):
+    def disconnect_to(self):
         self.device.disconnect()
         self.adapter.stop()
 
-    def get_value_from_ble(self, char_uuid):
+    def get_value(self, char_uuid):
         self.get_date()
         self.value = self.device.char_read(char_uuid)
         self.value = int(hexlify(self.value), 16)
